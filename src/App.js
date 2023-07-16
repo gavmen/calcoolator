@@ -15,9 +15,12 @@ const App = () => {
       setDisplayValue(num);
       setWaitingForOperand(false);
     } else {
-      setDisplayValue((prevValue) =>
-        prevValue === '0' ? num : prevValue + num
-      );
+      const newValue = displayValue === '0' ? num : displayValue + num;
+  
+      // Check if the new value has more than 9 digits
+      if (newValue.replace('.', '').length <= 9) {
+        setDisplayValue(newValue);
+      }
     }
   };
 
@@ -59,10 +62,14 @@ const App = () => {
   
     const result = performCalculation();
     setCurrentValue(null);
-    setDisplayValue(String(result));
     setOperator(null);
+  
+    const roundedResult = parseFloat(result.toFixed(5));
+    setDisplayValue(String(roundedResult));
+  
     setWaitingForOperand(true);
   };
+  
 
   const handleClearClick = () => {
     setDisplayValue('0');
