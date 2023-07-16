@@ -1,4 +1,5 @@
 import './App.css';
+import './reset.scss';
 import React, { useState, useEffect } from 'react';
 import './main.scss';
 
@@ -7,6 +8,7 @@ const App = () => {
   const [currentValue, setCurrentValue] = useState(null);
   const [operator, setOperator] = useState(null);
   const [waitingForOperand, setWaitingForOperand] = useState(false);
+  const [theme, setTheme] = useState('theme1');
 
   const handleNumberClick = (num) => {
     if (waitingForOperand) {
@@ -56,7 +58,7 @@ const App = () => {
     if (!operator) return;
   
     const result = performCalculation();
-    setCurrentValue(null); // Reset the currentValue after calculation
+    setCurrentValue(null);
     setDisplayValue(String(result));
     setOperator(null);
     setWaitingForOperand(true);
@@ -101,43 +103,91 @@ const App = () => {
     }; // eslint-disable-next-line
   }, [displayValue, operator]);
 
+  const handleThemeChange = (event) => {
+    setTheme(event.target.value);
+  };
+
   return (
-    <div className="calculator">
-      <div className="display">
-        <div className="current-operation">
-          {currentValue} {operator}
+    <div className={`calculator__container ${theme}`}>
+      <div className={`calculator ${theme}`}>
+        <h2>Calcool8)r</h2>
+        <div className="theme-switch">
+          <label>
+            <div className="option">
+              <input
+                type="radio"
+                name="theme"
+                value="theme1"
+                checked={theme === 'theme1'}
+                onChange={handleThemeChange}
+              />
+              <div className="btn"><span>Theme 1</span></div>
+            </div>
+            {/* Theme 1 */}
+          </label>
+          <label>
+            <div className="option">
+              <input
+                type="radio"
+                name="theme"
+                value="theme2"
+                checked={theme === 'theme2'}
+                onChange={handleThemeChange}
+              />
+              <div className="btn"><span>Theme 2</span></div>
+            </div>
+            {/* Theme 2 */}
+          </label>
+          <label>
+            <div className="option">
+              <input
+                type="radio"
+                name="theme"
+                value="theme3"
+                checked={theme === 'theme3'}
+                onChange={handleThemeChange}
+              />
+              <div className="btn"><span>Theme 3</span></div>
+            </div>
+            {/* Theme 3 */}
+          </label>
         </div>
-        <div className="current-value">{displayValue}</div>
+        <div className="display">
+          <div className="current-operation">
+            {currentValue} {operator}
+          </div>
+          <div className="current-value">{displayValue}</div>
+        </div>
+        <button className="operator" onClick={() => handleOperatorClick('/')}>
+          ÷
+        </button>
+        <button onClick={() => handleNumberClick('7')}>7</button>
+        <button onClick={() => handleNumberClick('8')}>8</button>
+        <button onClick={() => handleNumberClick('9')}>9</button>
+        <button className="operator" onClick={() => handleOperatorClick('*')}>
+          ×
+        </button>
+        <button onClick={() => handleNumberClick('4')}>4</button>
+        <button onClick={() => handleNumberClick('5')}>5</button>
+        <button onClick={() => handleNumberClick('6')}>6</button>
+        <button className="operator" onClick={() => handleOperatorClick('-')}>
+          -
+        </button>
+        <button onClick={() => handleNumberClick('1')}>1</button>
+        <button onClick={() => handleNumberClick('2')}>2</button>
+        <button onClick={() => handleNumberClick('3')}>3</button>
+        <button className="operator" onClick={() => handleOperatorClick('+')}>
+          +
+        </button>
+        <button onClick={() => handleNumberClick('0')}>0</button>
+        <button onClick={() => handleNumberClick('.')}>.</button>
+        <button className="equal" onClick={handleEqualClick}>
+          =
+        </button>
+        <button className="clear" onClick={handleClearClick}>
+          C
+        </button>
       </div>
-      <button className="operator" onClick={() => handleOperatorClick('/')}>
-        ÷
-      </button>
-      <button onClick={() => handleNumberClick('7')}>7</button>
-      <button onClick={() => handleNumberClick('8')}>8</button>
-      <button onClick={() => handleNumberClick('9')}>9</button>
-      <button className="operator" onClick={() => handleOperatorClick('*')}>
-        ×
-      </button>
-      <button onClick={() => handleNumberClick('4')}>4</button>
-      <button onClick={() => handleNumberClick('5')}>5</button>
-      <button onClick={() => handleNumberClick('6')}>6</button>
-      <button className="operator" onClick={() => handleOperatorClick('-')}>
-        -
-      </button>
-      <button onClick={() => handleNumberClick('1')}>1</button>
-      <button onClick={() => handleNumberClick('2')}>2</button>
-      <button onClick={() => handleNumberClick('3')}>3</button>
-      <button className="operator" onClick={() => handleOperatorClick('+')}>
-        +
-      </button>
-      <button onClick={() => handleNumberClick('0')}>0</button>
-      <button onClick={() => handleNumberClick('.')}>.</button>
-      <button className="equal" onClick={handleEqualClick}>
-        =
-      </button>
-      <button className="clear" onClick={handleClearClick}>
-        C
-      </button>
     </div>
   );
 };
