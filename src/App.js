@@ -54,9 +54,9 @@ const App = () => {
 
   const handleEqualClick = () => {
     if (!operator) return;
-
+  
     const result = performCalculation();
-    setCurrentValue(result);
+    setCurrentValue(null); // Reset the currentValue after calculation
     setDisplayValue(String(result));
     setOperator(null);
     setWaitingForOperand(true);
@@ -72,32 +72,34 @@ const App = () => {
   useEffect(() => {
     const handleKeyDown = (event) => {
       const { key } = event;
-
+  
       if (/^[0-9]$/.test(key)) {
         handleNumberClick(key);
-      } else if (key === '.' || key === ',') {
-        handleNumberClick('.');
+      } else if (key === '.') {
+        handleNumberClick(key);
       } else if (key === '+' || key === '-' || key === '*' || key === '/') {
-        // Normalize the operator symbols
-        const operator = {
-          '*': '×',
-          '/': '÷',
-        }[key];
-
-        handleOperatorClick(operator);
+        if (operator === null) {
+          setCurrentValue(parseFloat(displayValue));
+          setOperator(key);
+          setWaitingForOperand(true);
+        } else {
+          handleEqualClick();
+          setOperator(key);
+          setWaitingForOperand(true);
+        }
       } else if (key === 'Enter') {
         handleEqualClick();
       } else if (key === 'Escape') {
         handleClearClick();
       }
     };
-
+  
     document.addEventListener('keydown', handleKeyDown);
-
+  
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     }; // eslint-disable-next-line
-  }, []);
+  }, [displayValue, operator]);
 
   return (
     <div className="calculator">
