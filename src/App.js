@@ -17,7 +17,6 @@ const App = () => {
     } else {
       const newValue = displayValue === '0' ? num : displayValue + num;
   
-      // Check if the new value has more than 9 digits
       if (newValue.replace('.', '').length <= 9) {
         setDisplayValue(newValue);
       }
